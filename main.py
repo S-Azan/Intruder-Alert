@@ -1,4 +1,6 @@
 import face_recognition as fr
+import send_sms as sms
+import whatApp as WA
 from cv2 import *
 import cv2 as cv
 import tkinter
@@ -9,9 +11,9 @@ import webcam as wc
 
 wc.snapshot()
 
-Tk().withdraw()
-load_image = askopenfilename()
-
+# Tk().withdraw()
+# load_image = askopenfilename()
+load_image = wc.img_name
 target_image = fr.load_image_file(load_image)
 target_encoding = fr.face_encodings(target_image)
 
@@ -36,7 +38,18 @@ def find_target_face():
         filename = person[1]
 
         is_target_face = fr.compare_faces(encoded_face, target_encoding, tolerance=0.4)
-        print(f'{is_target_face} {filename}')
+        print(f'{is_target_face} {filename} {load_image}')
+
+        if target_image.any() in is_target_face:
+        # if is_target_face:
+            auth_user = "Authorized User Access Granted"
+            print(f'{auth_user}')
+        else:
+            unauth_user = "Intruder Alert! Unauthorized User"
+            # sms.send_sms()
+            print(f'{unauth_user}')
+            break
+
 
         if face_location:
             face_number = 0
@@ -60,6 +73,7 @@ def render_image():
     rgb_img = cv.cvtColor(target_image, cv.COLOR_BGR2RGB)
     cv.imshow('Face Recognition', rgb_img)
     cv.waitKey(0)
+
 
 find_target_face()
 render_image()

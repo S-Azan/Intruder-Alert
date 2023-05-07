@@ -1,10 +1,11 @@
 import os, sys
 import cv2
 
+img_name = "user.png"
 def snapshot():
     cam = cv2.VideoCapture(0)
 
-    cv2.namedWindow("Python Snapshot App")
+    # cv2.namedWindow("Python Snapshot App")
 
     img_counter = 0
 
@@ -15,7 +16,7 @@ def snapshot():
             print("failed to grab frame")
             break
 
-        cv2.imshow("test", frame)
+        cv2.imshow("Snapshot App", frame)
 
         k = cv2.waitKey(1)
 
@@ -23,11 +24,11 @@ def snapshot():
             print("Escape key pressed")
             break
         elif k % 256 == 32:
-            img_name = "opencv_frame_{}.png".format(img_counter)
+            # img_name = "opencv_frame_{}.png".format(img_counter)
             cv2.imwrite(img_name, frame)
             print("Screenshot taken")
-            img_counter += 1
+            break
+            # img_counter += 1
 
     cam.release()
-
     # cam.destroyAllWindows()
